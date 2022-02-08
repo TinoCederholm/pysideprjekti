@@ -1,24 +1,10 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+import time
 
+from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox
+
+from kysymykset import lataa_kysymykset_netista
 from quiz_ui import Ui_MainWindow
-
-KYSYMYKSET_JA_VASTAUKSET = [
-    (
-        "Mistä Python-ohjelmointikieli on saanut nimensä?",
-        "käärmeestä",
-        "laulusta",
-        "*TV-sarjasta",
-        "elokuvasta",
-    ),
-    (
-        "Paljonko on 5*5?",
-        "22",
-        "*25",
-        "27",
-        "35",
-    ),
-]
 
 
 class MainWindow(QMainWindow):
@@ -26,13 +12,20 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.luo_status_widget()
+        self.tiedot = lataa_kysymykset_netista()
         self.vaihda_kysymys_ja_vastaukset(0)
         self.kytke_napit()
+        self.kierros = 1
         self.pisteet = 0
         self.indeksi = 0
 
+    def luo_status_widget(self):
+        self.kierros_label = QLabel()
+        self.ui.statusbar.addPermanentWidget(self.kierros_label)
+
     def vaihda_kysymys_ja_vastaukset(self, indeksi):
-        tekstit = KYSYMYKSET_JA_VASTAUKSET[indeksi]
+        tekstit = self.tiedot[indeksi]
         uudet_tekstit = []
         for (numero, teksti) in enumerate(tekstit):
             if teksti.startswith("*"):
@@ -40,6 +33,7 @@ class MainWindow(QMainWindow):
                 self.oikea_vastaus = numero
             uudet_tekstit.append(teksti)
         self.aseta_tekstit(uudet_tekstit)
+        self.ui.nro_label.setText(f"{indeksi+1}/{len(self.tiedot)}")
 
     def aseta_tekstit(self, tekstit):
         self.aseta_kysymys(tekstit[0])
@@ -73,19 +67,46 @@ class MainWindow(QMainWindow):
         else:
             return
 
+        painettu_nappi = self.sender()
+
         if nappi == self.oikea_vastaus:
-            print("Oikein!")
             self.pisteet += 1
+            napin_vari = "rgb(0,255,0)"
+        else:
+            napin_vari = "rgb(255,0,0)"
+ 
+        painettu_nappi.setStyleSheet("* {background: " + napin_vari + ";}")
+        QApplication.processEvents()
+        time.sleep(0.25)
+        painettu_nappi.setStyleSheet("")
 
+        self.seuraava_kysymys()
+
+    def seuraava_kysymys(self):
         self.indeksi += 1
-        if self.indeksi >= len(KYSYMYKSET_JA_VASTAUKSET):
+        if self.indeksi >= len(self.tiedot):
             laatikko = QMessageBox(self)
-            laatikko.setText(f"Peli päättyi! sait {self.pisteet} pistettä.")
+            laatikko.setText(f"Peli päättyi! Sait {self.pisteet} pistettä.")
             laatikko.exec()
+            self.kierros += 1
             self.indeksi = 0
+            self.pisteet = 0
 
+        self.vaihda_kysymys_ja_vastaukset(self.indeksi)
 
-        self.vaihda_kysymys_ja_vastaukset()
+    @property
+    def pisteet(self):
+        return self._pisteet
+
+    @pisteet.setter
+    def pisteet(self, arvo):
+        self._pisteet = arvo
+        self.paivita_tilarivi()
+
+    def paivita_tilarivi(self):
+        self.ui.statusbar.showMessage(f"Pisteet: {self.pisteet}")
+        self.kierros_label.setText(f"Kierros: {self.kierros}")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

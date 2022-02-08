@@ -23,11 +23,20 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(822, 600)
+        MainWindow.resize(800, 600)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.nro_label = QLabel(self.centralwidget)
+        self.nro_label.setObjectName(u"nro_label")
+        font = QFont()
+        font.setPointSize(72)
+        self.nro_label.setFont(font)
+        self.nro_label.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout.addWidget(self.nro_label)
+
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -41,6 +50,10 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
+        font1 = QFont()
+        font1.setPointSize(14)
+        self.label.setFont(font1)
+        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.horizontalLayout.addWidget(self.label)
 
@@ -53,25 +66,40 @@ class Ui_MainWindow(object):
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.button1 = QPushButton(self.centralwidget)
-        self.button1.setObjectName(u"button1")
-
-        self.gridLayout.addWidget(self.button1, 0, 0, 1, 1)
-
-        self.button2 = QPushButton(self.centralwidget)
-        self.button2.setObjectName(u"button2")
-
-        self.gridLayout.addWidget(self.button2, 1, 0, 1, 1)
-
         self.button3 = QPushButton(self.centralwidget)
         self.button3.setObjectName(u"button3")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.MinimumExpanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.button3.sizePolicy().hasHeightForWidth())
+        self.button3.setSizePolicy(sizePolicy1)
+        self.button3.setFont(font1)
 
         self.gridLayout.addWidget(self.button3, 2, 0, 1, 1)
 
         self.button4 = QPushButton(self.centralwidget)
         self.button4.setObjectName(u"button4")
+        sizePolicy1.setHeightForWidth(self.button4.sizePolicy().hasHeightForWidth())
+        self.button4.setSizePolicy(sizePolicy1)
+        self.button4.setFont(font1)
 
-        self.gridLayout.addWidget(self.button4, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.button4, 2, 1, 1, 1)
+
+        self.button1 = QPushButton(self.centralwidget)
+        self.button1.setObjectName(u"button1")
+        sizePolicy1.setHeightForWidth(self.button1.sizePolicy().hasHeightForWidth())
+        self.button1.setSizePolicy(sizePolicy1)
+        self.button1.setFont(font1)
+
+        self.gridLayout.addWidget(self.button1, 1, 0, 1, 1)
+
+        self.button2 = QPushButton(self.centralwidget)
+        self.button2.setObjectName(u"button2")
+        sizePolicy1.setHeightForWidth(self.button2.sizePolicy().hasHeightForWidth())
+        self.button2.setSizePolicy(sizePolicy1)
+        self.button2.setFont(font1)
+
+        self.gridLayout.addWidget(self.button2, 1, 1, 1, 1)
 
 
         self.verticalLayout.addLayout(self.gridLayout)
@@ -79,7 +107,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 822, 22))
+        self.menubar.setGeometry(QRect(0, 0, 800, 19))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -91,11 +119,11 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Kysymyspeli", None))
+        self.nro_label.setText(QCoreApplication.translate("MainWindow", u"Numero", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Kysymys", None))
-        self.button1.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.button2.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.button3.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.button4.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.button3.setText(QCoreApplication.translate("MainWindow", u"C", None))
+        self.button4.setText(QCoreApplication.translate("MainWindow", u"D", None))
+        self.button1.setText(QCoreApplication.translate("MainWindow", u"A", None))
+        self.button2.setText(QCoreApplication.translate("MainWindow", u"B", None))
     # retranslateUi
-
